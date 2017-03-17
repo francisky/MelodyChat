@@ -1,0 +1,83 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.0.0'
+    }
+}
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        applicationId "www.melody.chat"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME as String
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+    buildTypes {
+        release {
+            //设置是否混淆
+            minifyEnabled false
+            //设置压缩对齐
+            zipAlignEnabled true
+            //移除无用的资源文件
+            shrinkResources true
+            //设置混淆配置文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile rootProject.ext.deps.junit
+    compile rootProject.ext.deps.supportV7
+    compile rootProject.ext.deps.supportV4
+    compile rootProject.ext.deps.recyclerviewV7
+    compile rootProject.ext.deps.design
+    apt rootProject.ext.deps.butterknifeCompiler
+    compile rootProject.ext.deps.butterknife
+    compile rootProject.ext.deps.eventBus
+    compile rootProject.ext.deps.glide
+    compile rootProject.ext.deps.logger
+    compile rootProject.ext.deps.rxandroid
+    compile rootProject.ext.deps.rxjava
+    compile rootProject.ext.deps.retrofit
+    compile rootProject.ext.deps.converterGson
+    compile rootProject.ext.deps.adapterRxjava
+    compile rootProject.ext.deps.okhttp
+    compile rootProject.ext.deps.loggingInterceptor
+
+    // Bugly
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    // Stetho
+    compile 'com.facebook.stetho:stetho:1.4.1'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
+    // Toast
+    compile 'com.github.johnpersano:supertoasts:2.0'
+}
