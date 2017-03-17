@@ -26,6 +26,7 @@ import www.melody.chat.R;
 import www.melody.chat.common.base.MBaseFragment;
 import www.melody.chat.main.adapter.MenuAdapter;
 import www.melody.chat.main.listener.OnItemClickListener;
+import www.melody.chat.utils.ToastUtils;
 
 /**
  * @author zhengxiuyuan
@@ -182,7 +183,8 @@ public class MessageFragment extends MBaseFragment {
 	private OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(int position) {
-			Toast.makeText(mContext, "我是第" + position + "条。", Toast.LENGTH_SHORT).show();
+			ToastUtils.showLongToast(mContext, "我是第" + position + "条。");
+//			Toast.makeText(mContext, "我是第" + position + "条。", Toast.LENGTH_SHORT).show();
 		}
 	};
 
